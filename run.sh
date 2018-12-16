@@ -15,6 +15,7 @@ mfccdir=`pwd`/mfcc
 vaddir=`pwd`/mfcc
 
 
+lid_trials=data/lid_test/trials
 lid_root=/export/corpora/VoxCeleb2
 nnet_dir=exp/xvector_nnet_1a
 musan_root=/export/corpora/JHU/musan
@@ -26,19 +27,18 @@ if [ $stage -le 0 ]; then
   local/nj2387_make_lid.pl $lid_root test data/lid_test
   # This script reates data/voxceleb1_test and data/voxceleb1_train.
   # Our evaluation set is the test portion of VoxCeleb1.
-#  local/make_voxceleb1.pl $voxceleb1_root data
   # We'll train on all of VoxCeleb2, plus the training portion of VoxCeleb1.
   # This should give 7,351 speakers and 1,277,503 utterances.
-  utils/combine_data.sh data/train data/lid_train data/lid_test
+  utils/combine_data.sh data/train data/lid_train
 fi
 
 if [ $stage -le 1 ]; then
   # Make MFCCs and compute the energy-based VAD for each dataset
-  for name in train; do
-    steps/make_mfcc.sh --write-utt2num-frames true --mfcc-config conf/mfcc.conf --nj 2 --cmd "$train_cmd" \
+  for name in train lid_test; do
+    steps/make_mfcc.sh --write-utt2num-frames true --mfcc-config conf/mfcc.conf --nj 3 --cmd "$train_cmd" \
       data/${name} exp/make_mfcc $mfccdir
     utils/fix_data_dir.sh data/${name}
-    sid/compute_vad_decision.sh --nj 2 --cmd "$train_cmd" \
+    sid/compute_vad_decision.sh --nj 3 --cmd "$train_cmd" \
       data/${name} exp/make_vad $vaddir
     utils/fix_data_dir.sh data/${name}
   done
@@ -172,9 +172,9 @@ if [ $stage -le 9 ]; then
     $nnet_dir/xvectors_train
 
   # Extract x-vectors used in the evaluation.
-#  sid/nnet3/xvector/extract_xvectors.sh --cmd "$train_cmd --mem 4G" --nj 40 \
-#    $nnet_dir data/voxceleb1_test \
-#    $nnet_dir/xvectors_voxceleb1_test
+  sid/nnet3/xvector/extract_xvectors.sh --cmd "$train_cmd --mem 4G" --nj 4 \
+    $nnet_dir data/lid_test \
+    $nnet_dir/xvectors_lid_test
 fi
 echo "Stage 9 completed."
 
@@ -200,22 +200,22 @@ if [ $stage -le 10 ]; then
 fi
 echo "Stage 10 completed."
 
-#if [ $stage -le 11 ]; then
-#  $train_cmd exp/scores/log/voxceleb1_test_scoring.log \
-#    ivector-plda-scoring --normalize-length=true \
-#    "ivector-copy-plda --smoothing=0.0 $nnet_dir/xvectors_train/plda - |" \
-#    "ark:ivector-subtract-global-mean $nnet_dir/xvectors_train/mean.vec scp:$nnet_dir/xvectors_voxceleb1_test/xvector.scp ark:- | transform-vec $nnet_dir/xvectors_train/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
-#    "ark:ivector-subtract-global-mean $nnet_dir/xvectors_train/mean.vec scp:$nnet_dir/xvectors_voxceleb1_test/xvector.scp ark:- | transform-vec $nnet_dir/xvectors_train/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
-#    "cat '$voxceleb1_trials' | cut -d\  --fields=1,2 |" exp/scores_voxceleb1_test || exit 1;
-#fi
-#
-#if [ $stage -le 12 ]; then
-#  eer=`compute-eer <(local/prepare_for_eer.py $voxceleb1_trials exp/scores_voxceleb1_test) 2> /dev/null`
-#  mindcf1=`sid/compute_min_dcf.py --p-target 0.01 exp/scores_voxceleb1_test $voxceleb1_trials 2> /dev/null`
-#  mindcf2=`sid/compute_min_dcf.py --p-target 0.001 exp/scores_voxceleb1_test $voxceleb1_trials 2> /dev/null`
-#  echo "EER: $eer%"
-#  echo "minDCF(p-target=0.01): $mindcf1"
-#  echo "minDCF(p-target=0.001): $mindcf2"
+if [ $stage -le 11 ]; then
+  $train_cmd exp/scores/log/lid_test_scoring.log \
+    ivector-plda-scoring --normalize-length=true \
+    "ivector-copy-plda --smoothing=0.0 $nnet_dir/xvectors_train/plda - |" \
+    "ark:ivector-subtract-global-mean $nnet_dir/xvectors_train/mean.vec scp:$nnet_dir/xvectors_lid_test/xvector.scp ark:- | transform-vec $nnet_dir/xvectors_train/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
+    "ark:ivector-subtract-global-mean $nnet_dir/xvectors_train/mean.vec scp:$nnet_dir/xvectors_lid_test/xvector.scp ark:- | transform-vec $nnet_dir/xvectors_train/transform.mat ark:- ark:- | ivector-normalize-length ark:- ark:- |" \
+    "cat '$lid_trials' | cut -d\  --fields=1,2 |" exp/scores_lid_test || exit 1;
+fi
+
+if [ $stage -le 12 ]; then
+  eer=`compute-eer <(local/prepare_for_eer.py $lid_trials exp/scores_lid_test) 2> /dev/null`
+  mindcf1=`sid/compute_min_dcf.py --p-target 0.01 exp/scores_lid_test $lid_trials 2> /dev/null`
+  mindcf2=`sid/compute_min_dcf.py --p-target 0.001 exp/scores_lid_test $lid_trials 2> /dev/null`
+  echo "EER: $eer%"
+  echo "minDCF(p-target=0.01): $mindcf1"
+  echo "minDCF(p-target=0.001): $mindcf2"
 #  # EER: 3.128%
 #  # minDCF(p-target=0.01): 0.3258
 #  # minDCF(p-target=0.001): 0.5003
@@ -224,5 +224,5 @@ echo "Stage 10 completed."
 #  # EER: 5.329%
 #  # minDCF(p-target=0.01): 0.4933
 #  # minDCF(p-target=0.001): 0.6168
-#fi
+fi
 
