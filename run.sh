@@ -25,10 +25,6 @@ stage=0
 if [ $stage -le 0 ]; then
   local/nj2387_make_lid.pl $lid_root dev data/lid_train
   local/nj2387_make_lid.pl $lid_root test data/lid_test
-  # This script reates data/voxceleb1_test and data/voxceleb1_train.
-  # Our evaluation set is the test portion of VoxCeleb1.
-  # We'll train on all of VoxCeleb2, plus the training portion of VoxCeleb1.
-  # This should give 7,351 speakers and 1,277,503 utterances.
   utils/combine_data.sh data/train data/lid_train
 fi
 
@@ -62,7 +58,7 @@ if [ $stage -le 2 ]; then
   rvb_opts+=(--rir-set-parameters "0.5, RIRS_NOISES/simulated_rirs/smallroom/rir_list")
   rvb_opts+=(--rir-set-parameters "0.5, RIRS_NOISES/simulated_rirs/mediumroom/rir_list")
 
-  # Make a reverberated version of the VoxCeleb2 list.  Note that we don't add any
+  # Make a reverberated version of the lang data list.  Note that we don't add any
   # additive noise here.
   python steps/data/reverberate_data_dir.py \
     "${rvb_opts[@]}" \
@@ -112,7 +108,7 @@ if [ $stage -le 3 ]; then
   steps/make_mfcc.sh --mfcc-config conf/mfcc.conf --nj 2 --cmd "$train_cmd" \
     data/train_aug_1m exp/make_mfcc $mfccdir
 
-  # Combine the clean and augmented VoxCeleb2 list.  This is now roughly
+  # Combine the clean and augmented lang data list.  This is now roughly
   # double the size of the original clean list.
   utils/combine_data.sh data/train_combined data/train_aug_1m data/train
 fi
@@ -217,13 +213,8 @@ if [ $stage -le 12 ]; then
   echo "EER: $eer%"
   echo "minDCF(p-target=0.01): $mindcf1"
   echo "minDCF(p-target=0.001): $mindcf2"
-#  # EER: 3.128%
-#  # minDCF(p-target=0.01): 0.3258
-#  # minDCF(p-target=0.001): 0.5003
-#  #
-#  # For reference, here's the ivector system from ../v1:
-#  # EER: 5.329%
-#  # minDCF(p-target=0.01): 0.4933
-#  # minDCF(p-target=0.001): 0.6168
+#  EER: 9.756%
+#  minDCF(p-target=0.01): 0.4634
+#  minDCF(p-target=0.001): 0.4634
 fi
 
