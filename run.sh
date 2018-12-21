@@ -201,6 +201,7 @@ fi
 echo "Stage 10 completed."
 
 if [ $stage -le 11 ]; then
+  python local/get_trials.py --count 100 $lid_root/test/aac $lid_trials
   $train_cmd exp/scores/log/lid_test_scoring.log \
     ivector-plda-scoring --normalize-length=true \
     "ivector-copy-plda --smoothing=0.0 $nnet_dir/xvectors_train/plda - |" \
