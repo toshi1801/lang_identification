@@ -3,6 +3,32 @@
 # Author: Naman Jain(nj2387), COMS 6998
 # This script select 20-25 random samples from test data and predicts their language.
 # Usage: ./decode.sh
+# Expected Output
+#Original Language: Cantonese ----> Predicted Language: Tamil
+#Original Language: Mandarin ----> Predicted Language: Mandarin
+#Original Language: Turkish ----> Predicted Language: Turkish
+#Original Language: Turkish ----> Predicted Language: Turkish
+#Original Language: Cantonese ----> Predicted Language: Cantonese
+#Original Language: Mandarin ----> Predicted Language: Mandarin
+#Original Language: Tamil ----> Predicted Language: Tamil
+#Original Language: English ----> Predicted Language: English
+#Original Language: English ----> Predicted Language: English
+#Original Language: Cantonese ----> Predicted Language: Cantonese
+#Original Language: Cantonese ----> Predicted Language: Tamil
+#Original Language: English ----> Predicted Language: English
+#Original Language: English ----> Predicted Language: English
+#Original Language: Turkish ----> Predicted Language: Turkish
+#Original Language: Tamil ----> Predicted Language: Tamil
+#Original Language: Tamil ----> Predicted Language: Turkish
+#Original Language: Cantonese ----> Predicted Language: Cantonese
+#Original Language: Mandarin ----> Predicted Language: Mandarin
+#Original Language: Tamil ----> Predicted Language: Tamil
+#Original Language: Mandarin ----> Predicted Language: Mandarin
+#Original Language: English ----> Predicted Language: English
+#Original Language: Turkish ----> Predicted Language: Turkish
+#Original Language: Mandarin ----> Predicted Language: Mandarin
+#Original Language: Turkish ----> Predicted Language: Turkish
+#Accuracy: 87.5
 
 . ./cmd.sh
 . ./path.sh
