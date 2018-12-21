@@ -71,3 +71,4 @@ New scripts (For usage, refer these scripts inside local/):
 5. identify_language.py: Called by decoder.sh to get the human readable language predictions for the given sample.
 6. update_sampling_rate.py: Re-sample wav files with given sampling rate. Needs librosa and ffmpeg to installed on system
    for this script to work.
+7. calculate_data_sample_time.py: Script calculates the duration of the given audio (only wav) samples.
