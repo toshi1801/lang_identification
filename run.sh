@@ -16,9 +16,9 @@ vaddir=`pwd`/mfcc
 
 
 lid_trials=data/lid_test/trials
-lid_root=/export/corpora/VoxCeleb2
+lid_root=db/audio
 nnet_dir=exp/xvector_nnet_1a
-musan_root=/export/corpora/JHU/musan
+musan_root=db/musan
 
 stage=0
 
