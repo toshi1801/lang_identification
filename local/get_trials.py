@@ -50,26 +50,21 @@ def main():
         f_parts = f.split('/')
         tmap[f_parts[0]].append(f_parts[0] + '-' + f_parts[1] + '-' + f_parts[2].split('.')[0])
 
-    flag = 1
-    for i in range(args.count):
-        if flag:
-            key, value = random.choice(list(tmap.items()))
-            c1 = random.choice(value)
-            c2 = random.choice(value)
-            label = 'target'
-            flag = 0
-        else:
-            key, value = random.choice(list(tmap.items()))
-            c1 = random.choice(value)
-            key_list = tmap.keys()
-            key_list.remove(key)
-            diff_key = random.choice(key_list)
-            c2 = random.choice(tmap[diff_key])
-            label = 'nontarget'
-            flag = 1
+    samples = defaultdict(list)
+    for k, v in tmap.items():
+        samples[k].extend(random.sample(v, 5))
 
+    pairs = []
+
+    for k, values in samples.items():
+        keys = list(tmap.keys())
+        keys.remove(k)
+        for v in values:
+            k_s = keys.pop()
+            pairs.append((v, random.sample(samples[k_s], 1), 'target'))
+    for p in pairs:
         with open(args.trials_filename, 'a') as f:
-            line = c1 + ' ' + c2 + ' ' + label + '\n'
+            line = p[0] + ' ' + p[1] + ' ' + p[2] + '\n'
             f.write(line)
 
 
