@@ -4,6 +4,7 @@
 #        2017-2018   David Snyder
 #             2018   Ewald Enzinger
 # Apache 2.0.
+# Modified by Naman Jain(nj2387) for end-to-end language identification project.(COMS 6998)
 #
 # See ../README.txt for more info on data required.
 # Results (mostly equal error-rates) are inline in comments below.
@@ -23,8 +24,8 @@ musan_root=db/musan
 stage=0
 
 if [ $stage -le 0 ]; then
-  local/nj2387_make_lid.pl $lid_root dev data/lid_train
-  local/nj2387_make_lid.pl $lid_root test data/lid_test
+  local/make_lid_data.pl $lid_root dev data/lid_train
+  local/make_lid_data.pl $lid_root test data/lid_test
   utils/combine_data.sh data/train data/lid_train
 fi
 

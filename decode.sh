@@ -1,5 +1,8 @@
 #!/bin/bash
+#
+# Author: Naman Jain(nj2387), COMS 6998
 # This script select 20-25 random samples from test data and predicts their language.
+# Usage: ./decode.sh
 
 . ./cmd.sh
 . ./path.sh

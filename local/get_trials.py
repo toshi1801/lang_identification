@@ -1,3 +1,5 @@
+# Author: Naman Jain(nj2387), COMS 6998
+
 from __future__ import print_function
 from collections import defaultdict
 

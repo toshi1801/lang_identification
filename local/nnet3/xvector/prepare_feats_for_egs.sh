@@ -3,7 +3,7 @@
 # Copied from egs/sre16/v1/local/nnet3/xvector/prepare_feats_for_egs.sh (commit 3ea534070fd2cccd2e4ee21772132230033022ce).
 #
 # Apache 2.0.
-
+# Modified by Naman Jain(nj2387) for end-to-end language identification project.(COMS 6998)
 # This script applies sliding window cmvn and removes silence frames.  This
 # is performed on the raw features prior to generating examples for training
 # the xvector system.

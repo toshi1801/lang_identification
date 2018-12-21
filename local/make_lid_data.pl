@@ -2,7 +2,9 @@
 #
 # Copyright 2018  Ewald Enzinger
 #
-# Usage: nj2387_make_lid.pl /export/lid_data dev data/dev
+# Usage: make_lid_data.pl /export/lid_data dev data/dev
+#
+# Modified by Naman Jain(nj2387) for end-to-end language identification project.(COMS 6998)
 #
 # Note: This script requires ffmpeg to be installed and its location included in $PATH.
 

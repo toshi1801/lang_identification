@@ -6,7 +6,8 @@
 # Copied from egs/sre16/v1/local/nnet3/xvector/tuning/run_xvector_1a.sh (commit e082c17d4a8f8a791428ae4d9f7ceb776aef3f0b).
 #
 # Apache 2.0.
-
+#
+# Modified by Naman Jain(nj2387) for end-to-end language identification project.(COMS 6998)
 # This script trains a DNN similar to the recipe described in
 # http://www.danielpovey.com/files/2018_icassp_xvectors.pdf
 

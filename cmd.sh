@@ -9,6 +9,7 @@
 # conf/queue.conf to match your queue's configuration.  Search for
 # conf/queue.conf in http://kaldi-asr.org/doc/queue.html for more information,
 # or search for the string 'default_config' in utils/queue.pl or utils/slurm.pl.
+# Modified by Naman Jain(nj2387) for end-to-end language identification project.(COMS 6998)
 
 export train_cmd="run.pl --mem 4G"
 

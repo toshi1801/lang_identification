@@ -1,3 +1,5 @@
+# Author: Naman Jain(nj2387), COMS 6998
+# Re-sample wav files based on the given sampling rate
 # Usage : python update_sampling_rate.py <absolute_path_to_audio_directory> <sample_rate>
 
 import librosa

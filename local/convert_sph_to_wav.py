@@ -1,3 +1,7 @@
+# Author: Naman Jain(nj2387), COMS 6998
+# Converts sph files to wav files
+# Usage: python convert_sph_to_wav.py <path-to-sph-file-folder> <path-to-wav-files-folder>
+
 import os
 import contextlib
 import sys
