@@ -4,6 +4,7 @@ Name: Naman Jain
 Course: Fundamentals of Speech Recognition COMS 6998 003
 
 Data:
+Note: Data is not available with this recipe.
 
 The cleaned speech data is present in folder 'db'
 This folder contains the following structure:
